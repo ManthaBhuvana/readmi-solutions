@@ -34,7 +34,7 @@ export function Services() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
           <div className="max-w-2xl">
-            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
+            <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-red)]">
               <span className="h-2 w-2 rounded-full bg-gradient-fire" /> What we do
             </p>
             <h2 className="mt-4 font-display text-4xl font-black tracking-tight sm:text-5xl">

@@ -1,17 +1,39 @@
 import { useState, type FormEvent } from "react";
 import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
+import { submitContact } from "@/lib/forms.functions";
+import { SITE, telHref } from "@/lib/site";
 
 export function ContactForm({ heading = true }: { heading?: boolean }) {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function onSubmit(e: FormEvent) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    const get = (k: string) => String(fd.get(k) ?? "");
     setSubmitting(true);
-    setTimeout(() => {
+    setError(null);
+    try {
+      await submitContact({
+        data: {
+          name: get("name"),
+          email: get("email"),
+          company: get("company"),
+          service: get("service"),
+          brief: get("brief"),
+          website: get("website"),
+          page: window.location.pathname,
+        },
+      });
       setSent(true);
+      form.reset();
+    } catch {
+      setError("Sorry, we couldn't send your message. Please try again, or email us directly.");
+    } finally {
       setSubmitting(false);
-    }, 800);
+    }
   }
 
   return (
@@ -36,15 +58,15 @@ export function ContactForm({ heading = true }: { heading?: boolean }) {
             )}
             <ul className="mt-8 space-y-4">
               {[
-                { Icon: Mail, label: "hello@readmisolutions.com" },
-                { Icon: Phone, label: "+91 98765 43210" },
-                { Icon: MapPin, label: "Mon – Sat · 10:00 – 19:00 IST" },
-              ].map(({ Icon, label }) => (
+                { Icon: Mail, label: SITE.email, href: `mailto:${SITE.email}` },
+                ...(SITE.phone ? [{ Icon: Phone, label: SITE.phone, href: telHref(SITE.phone) }] : []),
+                ...(SITE.hours ? [{ Icon: MapPin, label: SITE.hours, href: "" }] : []),
+              ].map(({ Icon, label, href }) => (
                 <li key={label} className="flex items-center gap-4">
                   <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-fire text-[var(--brand-cream)] shadow-fire">
                     <Icon size={16} />
                   </span>
-                  <span className="font-medium">{label}</span>
+                  {href ? <a href={href} className="font-medium hover:text-[var(--brand-red)]">{label}</a> : <span className="font-medium">{label}</span>}
                 </li>
               ))}
             </ul>
@@ -56,6 +78,9 @@ export function ContactForm({ heading = true }: { heading?: boolean }) {
           >
             <div className="absolute -top-32 -right-20 h-72 w-72 rounded-full bg-gradient-fire opacity-15 blur-3xl" aria-hidden />
             <div className="relative grid gap-5">
+              <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", height: 0, overflow: "hidden" }}>
+                <label>Leave this empty<input type="text" name="website" tabIndex={-1} autoComplete="off" /></label>
+              </div>
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Full name" name="name" placeholder="Jane Doe" />
                 <Field label="Work email" name="email" type="email" placeholder="jane@company.com" />
@@ -76,6 +101,9 @@ export function ContactForm({ heading = true }: { heading?: boolean }) {
                   className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-all placeholder:text-foreground/30 focus:border-[var(--brand-red)] focus:ring-4 focus:ring-[var(--brand-red)]/15"
                 />
               </div>
+              {error && (
+                <p role="alert" className="text-sm font-medium text-[var(--brand-red)]">{error}</p>
+              )}
               <button
                 type="submit"
                 disabled={submitting || sent}
@@ -84,7 +112,7 @@ export function ContactForm({ heading = true }: { heading?: boolean }) {
                 {sent ? (
                   <>
                     <CheckCircle2 size={18} />
-                    Thank you — we'll be in touch
+                    Thank you — check your inbox
                   </>
                 ) : submitting ? (
                   "Sending…"

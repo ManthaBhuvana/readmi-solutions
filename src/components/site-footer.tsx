@@ -1,12 +1,39 @@
 import { Link } from "@tanstack/react-router";
-import { Instagram, Linkedin, Twitter, Youtube, ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { Instagram, Linkedin, Twitter, Youtube, ArrowRight, Check, CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { subscribeNewsletter } from "@/lib/forms.functions";
+import { SITE, telHref } from "@/lib/site";
 import logo from "@/assets/readmi-logo.png";
 import { Button } from "@/components/ui/button";
 
+const SOCIALS = [
+  { Icon: Instagram, label: "Instagram", href: SITE.socials.instagram },
+  { Icon: Twitter, label: "X (Twitter)", href: SITE.socials.twitter },
+  { Icon: Linkedin, label: "LinkedIn", href: SITE.socials.linkedin },
+  { Icon: Youtube, label: "YouTube", href: SITE.socials.youtube },
+];
+
 export function SiteFooter() {
+  const socials = SOCIALS.filter((x) => x.href);
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+  const [subscribed, setSubscribed] = useState<{ email: string; duplicate: boolean } | null>(null);
+  const sent = status === "done";
+
+  async function onSubscribe(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!email || status === "loading") return;
+    const website = String(new FormData(e.currentTarget).get("website") ?? "");
+    setStatus("loading");
+    try {
+      const res = await subscribeNewsletter({ data: { email, website, page: window.location.pathname } });
+      setSubscribed({ email, duplicate: Boolean(res?.duplicate) });
+      setStatus("done");
+      setEmail("");
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
     <footer className="relative mt-24 overflow-hidden bg-[var(--brand-slate)] text-[var(--brand-cream)]">
@@ -24,29 +51,52 @@ export function SiteFooter() {
               Powering Your Digital Growth. Built with a Human Touch.
             </p>
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (email) setSent(true);
-              }}
+              onSubmit={onSubscribe}
               className="mt-6 flex max-w-md items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 backdrop-blur"
             >
+              <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }} />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder={sent ? "Subscribed. Watch your inbox." : "your@email.com"}
+                placeholder="your@email.com"
                 disabled={sent}
-                className="flex-1 bg-transparent px-4 py-2 text-sm placeholder:text-[var(--brand-cream)]/40 outline-none"
+                aria-label="Email address"
+                className="min-w-0 flex-1 bg-transparent px-4 py-2 text-sm placeholder:text-[var(--brand-cream)]/40 outline-none disabled:opacity-50"
               />
               <Button
                 type="submit"
+                disabled={status === "loading" || sent}
                 className="inline-flex items-center gap-1.5 rounded-full bg-gradient-fire px-4 py-2 text-sm font-semibold shadow-fire transition-transform hover:scale-[1.03]"
               >
-                {sent ? "Sent" : "Subscribe"}
-                <ArrowRight size={14} />
+                {sent ? "Subscribed" : status === "loading" ? "Sending…" : "Subscribe"}
+                {sent ? <Check size={14} /> : <ArrowRight size={14} />}
               </Button>
             </form>
+            <div aria-live="polite">
+              {sent && subscribed && (
+                <p className="mt-3 flex max-w-md items-start gap-2 text-sm leading-snug text-[var(--brand-cream)]">
+                  <CheckCircle2 size={18} className="mt-px shrink-0 text-[var(--brand-orange)]" />
+                  <span>
+                    {subscribed.duplicate ? (
+                      <>You’re already subscribed with <strong className="font-semibold">{subscribed.email}</strong>. Thanks for sticking with us.</>
+                    ) : (
+                      <>
+                        You’re subscribed. A welcome email is on its way to{" "}
+                        <strong className="font-semibold">{subscribed.email}</strong>
+                        <span className="text-[var(--brand-cream)]/60"> (check spam if you don’t see it).</span>
+                      </>
+                    )}
+                  </span>
+                </p>
+              )}
+              {status === "error" && (
+                <p role="alert" className="mt-3 text-sm text-[var(--brand-orange)]">
+                  Couldn’t subscribe right now. Please try again.
+                </p>
+              )}
+            </div>
           </div>
 
           <FooterCol
@@ -72,31 +122,34 @@ export function SiteFooter() {
               Contact
             </h4>
             <ul className="mt-4 space-y-2.5 text-sm text-[var(--brand-cream)]/80">
-              <li>hello@readmisolutions.com</li>
-              <li>+91 98765 43210</li>
-              <li>Mon – Sat · 10:00 – 19:00 IST</li>
+              <li><a href={`mailto:${SITE.email}`} className="hover:text-[var(--brand-cream)]">{SITE.email}</a></li>
+              {SITE.phone && <li><a href={telHref(SITE.phone)} className="hover:text-[var(--brand-cream)]">{SITE.phone}</a></li>}
+              {SITE.hours && <li>{SITE.hours}</li>}
             </ul>
-            <div className="mt-5 flex gap-3">
-              {[Instagram, Twitter, Linkedin, Youtube].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  aria-label="social"
-                  className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 transition-all hover:border-[var(--brand-orange)] hover:bg-gradient-fire hover:scale-110"
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
-            </div>
+            {socials.length > 0 && (
+              <div className="mt-5 flex gap-3">
+                {socials.map(({ Icon, href, label }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="grid h-10 w-10 place-items-center rounded-full border border-white/15 bg-white/5 transition-all hover:border-[var(--brand-orange)] hover:bg-gradient-fire hover:scale-110"
+                  >
+                    <Icon size={16} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-6 text-xs text-[var(--brand-cream)]/50 sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} Readmi Solutions. All rights reserved.</span>
           <div className="flex gap-5">
-            <a href="#" className="hover:text-[var(--brand-cream)]">Privacy</a>
-            <a href="#" className="hover:text-[var(--brand-cream)]">Terms</a>
-            <a href="#" className="hover:text-[var(--brand-cream)]">Cookies</a>
+            <Link to="/privacy" className="hover:text-[var(--brand-cream)]">Privacy</Link>
+            <Link to="/terms" className="hover:text-[var(--brand-cream)]">Terms</Link>
           </div>
         </div>
       </div>

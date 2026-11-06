@@ -8,7 +8,7 @@ export const Route = createFileRoute("/services")({
       { title: "Services — Readmi Solutions" },
       { name: "description", content: "Website designing, SEO, social media marketing and e-mail marketing, connected under one roof." },
       { property: "og:title", content: "Services — Readmi Solutions" },
-      { property: "og:description", content: "End-to-end digital and IT services for ambitious businesses." },
+      { property: "og:description", content: "End-to-end digital services for ambitious businesses." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

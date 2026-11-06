@@ -73,10 +73,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Readmi Solutions — Digital Marketing & IT Services" },
+      { title: "Readmi Solutions — Digital Marketing & Web Services" },
       { name: "description", content: "Readmi Solutions: website design, SEO, social media and e-mail marketing. Powering Your Digital Growth. Built with a Human Touch." },
-      { property: "og:title", content: "Readmi Solutions — Digital Marketing & IT Services" },
-      { property: "og:description", content: "Web, marketing, and IT services engineered to drive measurable growth." },
+      { property: "og:title", content: "Readmi Solutions — Digital Marketing & Web Services" },
+      { property: "og:description", content: "Websites, SEO and marketing engineered to drive measurable growth." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
