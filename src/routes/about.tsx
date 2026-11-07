@@ -1,17 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About — Readmi Solutions" },
-      { name: "description", content: "Readmi Solutions brings technology, creativity and expertise together as a single accountable partner for digital growth." },
-      { property: "og:title", content: "About Readmi Solutions" },
-      { property: "og:description", content: "A decade of experience supporting startups, academic institutions and businesses with integrated digital solutions." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "About Readmi Solutions — Our Story & Team",
+      description: "Readmi Solutions brings technology, creativity and expertise together as a single accountable partner for digital growth.",
+      path: "/about",
+    }),
   component: AboutPage,
 });
 

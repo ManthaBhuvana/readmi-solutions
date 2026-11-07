@@ -11,7 +11,9 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   for (const [k, v] of Object.entries(env)) if (process.env[k] === undefined) process.env[k] = v;
   return {
-  server: { port: 5173 },
+  // 5173 is Vite's default. Port 3000 is often reserved on Windows (EACCES).
+  // To use another port: set PORT in .env, e.g. PORT=4000
+  server: { port: Number(process.env.PORT) || 5173 },
   resolve: { dedupe: ["react", "react-dom", "@tanstack/react-router", "@tanstack/react-query"] },
   plugins: [
     tsConfigPaths(),

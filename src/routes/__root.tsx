@@ -12,6 +12,8 @@ import type { ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/site-header";
 import { SiteFooter } from "../components/site-footer";
+import { brandJsonLd } from "../lib/seo";
+import { SITE } from "../lib/site";
 
 function NotFoundComponent() {
   return (
@@ -74,15 +76,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Readmi Solutions — Digital Marketing & Web Services" },
-      { name: "description", content: "Readmi Solutions: website design, SEO, social media and e-mail marketing. Powering Your Digital Growth. Built with a Human Touch." },
-      { property: "og:title", content: "Readmi Solutions — Digital Marketing & Web Services" },
-      { property: "og:description", content: "Websites, SEO and marketing engineered to drive measurable growth." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "theme-color", content: "#D01B22" },
+      { name: "application-name", content: SITE.name },
+      { name: "apple-mobile-web-app-title", content: SITE.name },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "icon", type: "image/png", sizes: "48x48", href: "/favicon-48.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon-192.png" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -90,6 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap",
       },
     ],
+    scripts: [{ type: "application/ld+json", children: brandJsonLd() }],
   }),
   shellComponent: RootShell,
   component: RootComponent,

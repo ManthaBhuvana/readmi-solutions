@@ -11,8 +11,8 @@
  */
 
 // ====== EDIT THESE THREE LINES ======
-const SECRET = 'poiuytrewqasdfghjklmnbvcxz'; // must match WEBHOOK_SECRET in the website's env
-const OWNER_EMAIL = 'info@readmisolutions.com';             // where new inquiries are sent
+const SECRET = 'PASTE_A_LONG_RANDOM_STRING_HERE'; // must match WEBHOOK_SECRET in the website's env
+const OWNER_EMAIL = 'you@example.com';             // where new inquiries are sent
 const BRAND = 'Readmi Solutions';
 // ====================================
 

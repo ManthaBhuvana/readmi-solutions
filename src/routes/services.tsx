@@ -1,18 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { Services } from "@/components/sections/services";
 import { CtaBand } from "@/components/sections/cta-band";
 
 export const Route = createFileRoute("/services")({
-  head: () => ({
-    meta: [
-      { title: "Services — Readmi Solutions" },
-      { name: "description", content: "Website designing, SEO, social media marketing and e-mail marketing, connected under one roof." },
-      { property: "og:title", content: "Services — Readmi Solutions" },
-      { property: "og:description", content: "End-to-end digital services for ambitious businesses." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Services — Website Design, SEO & Marketing | Readmi Solutions",
+      description: "Website designing, SEO, social media marketing and e-mail marketing from Readmi Solutions, connected under one roof.",
+      path: "/services",
+    }),
   component: ServicesPage,
 });
 

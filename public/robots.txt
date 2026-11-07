@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://readmisolutions.com/sitemap.xml
+Sitemap: https://www.readmisolutions.com/sitemap.xml

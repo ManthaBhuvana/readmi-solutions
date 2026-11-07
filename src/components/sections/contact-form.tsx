@@ -3,7 +3,8 @@ import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react";
 import { submitContact } from "@/lib/forms.functions";
 import { SITE, telHref } from "@/lib/site";
 
-export function ContactForm({ heading = true }: { heading?: boolean }) {
+export function ContactForm({ heading = true, asPage = false }: { heading?: boolean; asPage?: boolean }) {
+  const Heading = asPage ? "h1" : "h2";
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,10 +47,10 @@ export function ContactForm({ heading = true }: { heading?: boolean }) {
                 <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-red)]">
                   <span className="h-2 w-2 rounded-full bg-gradient-fire" /> Contact
                 </p>
-                <h2 className="mt-4 font-display text-4xl font-black tracking-tight sm:text-5xl">
+                <Heading className="mt-4 font-display text-4xl font-black tracking-tight sm:text-5xl">
                   Let's discuss your<br />
                   <span className="text-gradient-fire">next project</span>.
-                </h2>
+                </Heading>
                 <p className="mt-6 max-w-md text-foreground/70 leading-relaxed">
                   Tell us about your business, goals, and timeline. Our team responds to
                   every inquiry within one business day.

@@ -2,9 +2,9 @@
 // Leave a value empty ("") to hide it.
 export const SITE = {
   name: "Readmi Solutions",
-  url: "https://readmisolutions.com",
+  url: "https://www.readmisolutions.com", // main address (readmisolutions.com redirects here)
   email: "info@readmisolutions.com",
-  phone: "+91 7093042999", 
+  phone: "91+ 7093042999", 
   hours: "Mon – Sat · 10:00 – 19:00 IST", // confirm your real working hours
   socials: {
     instagram: "", // e.g. "https://www.instagram.com/yourhandle"

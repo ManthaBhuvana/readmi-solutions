@@ -1,14 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageHead } from "@/lib/seo";
 import { LegalPage } from "@/components/legal-page";
 import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: "Terms of Use — Readmi Solutions" },
-      { name: "description", content: "Terms for using the Readmi Solutions website." },
-    ],
-  }),
+  head: () =>
+    pageHead({
+      title: "Terms of Use — Readmi Solutions",
+      description: "Terms for using the Readmi Solutions website.",
+      path: "/terms",
+    }),
   component: Terms,
 });
 
