@@ -44,7 +44,7 @@ export function ContactForm({ heading = true, asPage = false }: { heading?: bool
           <div>
             {heading && (
               <>
-                <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[var(--brand-red)]">
+                <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-brand-red">
                   <span className="h-2 w-2 rounded-full bg-gradient-fire" /> Contact
                 </p>
                 <Heading className="mt-4 font-display text-4xl font-black tracking-tight sm:text-5xl">
@@ -64,10 +64,10 @@ export function ContactForm({ heading = true, asPage = false }: { heading?: bool
                 ...(SITE.hours ? [{ Icon: MapPin, label: SITE.hours, href: "" }] : []),
               ].map(({ Icon, label, href }) => (
                 <li key={label} className="flex items-center gap-4">
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-fire text-[var(--brand-cream)] shadow-fire">
+                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-fire text-brand-cream shadow-fire">
                     <Icon size={16} />
                   </span>
-                  {href ? <a href={href} className="font-medium hover:text-[var(--brand-red)]">{label}</a> : <span className="font-medium">{label}</span>}
+                  {href ? <a href={href} className="font-medium hover:text-brand-red">{label}</a> : <span className="font-medium">{label}</span>}
                 </li>
               ))}
             </ul>
@@ -99,16 +99,16 @@ export function ContactForm({ heading = true, asPage = false }: { heading?: bool
                   rows={5}
                   name="brief"
                   placeholder="Tell us about your business, goals, and timeline…"
-                  className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-all placeholder:text-foreground/30 focus:border-[var(--brand-red)] focus:ring-4 focus:ring-[var(--brand-red)]/15"
+                  className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-all placeholder:text-foreground/30 focus:border-brand-red focus:ring-4 focus:ring-(--brand-red)/15"
                 />
               </div>
               {error && (
-                <p role="alert" className="text-sm font-medium text-[var(--brand-red)]">{error}</p>
+                <p role="alert" className="text-sm font-medium text-brand-red">{error}</p>
               )}
               <button
                 type="submit"
                 disabled={submitting || sent}
-                className="btn-shine group relative inline-flex items-center justify-center gap-2 rounded-full bg-gradient-fire px-7 py-4 text-base font-semibold text-[var(--brand-cream)] shadow-fire transition-transform hover:scale-[1.02] disabled:opacity-90"
+                className="btn-shine group relative inline-flex items-center justify-center gap-2 rounded-full bg-gradient-fire px-7 py-4 text-base font-semibold text-brand-cream shadow-fire transition-transform hover:scale-[1.02] disabled:opacity-90"
               >
                 {sent ? (
                   <>
@@ -141,7 +141,7 @@ function Field({ label, name, placeholder, type = "text" }: { label: string; nam
         type={type}
         name={name}
         placeholder={placeholder}
-        className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-all placeholder:text-foreground/30 focus:border-[var(--brand-red)] focus:ring-4 focus:ring-[var(--brand-red)]/15"
+        className="mt-2 w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition-all placeholder:text-foreground/30 focus:border-brand-red focus:ring-4 focus:ring-(--brand-red)/15"
       />
     </div>
   );
