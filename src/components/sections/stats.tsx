@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 export function Stats() {
   return (
@@ -23,8 +23,8 @@ export function Stats() {
 }
 
 function Counter({ value, suffix, label }: { value: number; suffix?: string; label: string }) {
-  const [n, setN] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
+  const [n, setN] = useState(value);          // server HTML shows "10+"
+useLayoutEffect(() => { setN(0); }, []);    // browser resets before paint, animation unchanged
   const started = useRef(false);
 
   useEffect(() => {
