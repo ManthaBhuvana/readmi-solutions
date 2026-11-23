@@ -23,9 +23,13 @@ export function Stats() {
 }
 
 function Counter({ value, suffix, label }: { value: number; suffix?: string; label: string }) {
-  const [n, setN] = useState(value);          // server HTML shows "10+"
-useLayoutEffect(() => { setN(0); }, []);    // browser resets before paint, animation unchanged
+  const [n, setN] = useState(value);              // server HTML shows "10+"
+  const ref = useRef<HTMLDivElement>(null);       // ← this line was missing
   const started = useRef(false);
+
+  useLayoutEffect(() => {
+    setN(0);                                      // browser resets before paint, animation unchanged
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
